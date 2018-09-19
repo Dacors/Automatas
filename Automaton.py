@@ -39,8 +39,15 @@ class Reader:
                 edges = []
             else:
                 edges = edges
+    
+    @classmethod
+    def read_from_str(cls, automaton_str):
+        print(automaton_str)
 
+automaton_file = open("automata.txt")
+automaton_string = automaton_file.read()
 
+Reader.read_from_str(automaton_string)
 
 
 
