@@ -7,7 +7,7 @@ class Automaton:
 
 class State:
 
-    def __init__(self, state_id, state_name, edges = None):
+    def __init__(self, state_id, state_name, edges=None):
         self.state_id = state_id
         self.state_name = state_name
         if edges is None:
@@ -18,10 +18,29 @@ class State:
 
 class Edge:
 
-    def __init__(self, edge_id, edge_accepted_value, is_recursive):
+    def __init__(self, edge_id, is_recursive, edge_accepted_values=None):
         self.edge_id = edge_id
-        self.edge_accepted_value = edge_accepted_value
         self.is_recursive = is_recursive
+        if edge_accepted_values is None:
+            self.edge_accepted_values = []
+        else:
+            self.edge_accepted_values = edge_accepted_values
+
+class Reader:
+
+    def __init__(self, automaton, states=None, edges=None):
+        self.automaton = automaton
+        if states is None:
+            states = [] 
+            edges = []
+        else:
+            states = states
+            if edges is None:
+                edges = []
+            else:
+                edges = edges
+
+
 
 
 
