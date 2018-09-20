@@ -1,4 +1,4 @@
-
+import re
 class Automaton:
 
     def __init__(self, automaton_name):
@@ -7,24 +7,35 @@ class Automaton:
 
 class State:
 
-    def __init__(self, state_id, state_name, edges=None):
+    def __init__(self, state_id,is_initial, is_final, edges=None):
         self.state_id = state_id
-        self.state_name = state_name
         if edges is None:
             self.edges = []
         else: 
             self.edges = edges
 
-
 class Edge:
 
-    def __init__(self, edge_id, is_recursive, edge_accepted_values=None):
-        self.edge_id = edge_id
+    def __init__(self, initial_state, final_state, is_recursive, edge_accepted_values=None):
+        self.initial_state = initial_state
+        self.final_state =  final_state
         self.is_recursive = is_recursive
         if edge_accepted_values is None:
             self.edge_accepted_values = []
         else:
             self.edge_accepted_values = edge_accepted_values
+
+    @classmethod
+    def read_from_str(cls, line_str):
+        
+        line_arr = re.split(",", line_str)
+        edge_str = ''.join(list(filter(lambda x: '-' in x, line_arr)))
+        states_arr = list(filter(lambda x: '(' in x, line_arr))
+        recursive = re.findall(r"[\w']+", states_arr[0]) == re.findall(r"[\w']+", states_arr[1])
+        accepted_values = re.findall(r'\d+',edge_str)
+        edge = Edge(''.join(re.findall(r"[\w']+", states_arr[0])), ''.join(re.findall(r"[\w']+", states_arr[1])), recursive, accepted_values )
+        return edge
+
 
 class Reader:
 
@@ -42,11 +53,22 @@ class Reader:
     
     @classmethod
     def read_from_str(cls, automaton_str):
-        print(automaton_str)
+        automaton_arr = list(filter(lambda x: len(x)>0,re.split("\n", automaton_str)))  
+        edges = []
+        states = []
+        for x in range(0,len(automaton_arr)):
+            edges.append(Edge.read_from_str(automaton_arr[x]))
+            states.extend(list(filter(lambda x: '(' in x, re.split(",",automaton_arr[x]))))
+        
+        states_arr = list(set(states))
+        for x in range(0,len(states_arr)):
+            print(states_arr[x])
 
+
+
+   
 automaton_file = open("automata.txt")
 automaton_string = automaton_file.read()
-
 Reader.read_from_str(automaton_string)
 
 
