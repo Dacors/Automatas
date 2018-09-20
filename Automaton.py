@@ -43,14 +43,14 @@ class DFA(Automaton):
     def __init__(self, automaton, states=None, edges=None):
         self.automaton = automaton
         if states is None:
-            states = [] 
-            edges = []
+            self.states = [] 
+            self.edges = []
         else:
-            states = states
+            self.states = states
             if edges is None:
-                edges = []
+                self.edges = []
             else:
-                edges = edges
+                self.edges = edges
     
     @classmethod
     def read_from_str(cls, automaton_str):
@@ -64,6 +64,14 @@ class DFA(Automaton):
         
         states_arr = list(set(states_tmp))
         for x in range(0,len(states_arr)):
+            is_final = "((" in states_arr[x]
+            is_initial = ">" in states_arr[x]
+            state_id = ''.join(re.findall(r"[\w']+", states_arr[x]))
+            state_edges = list(filter(lambda x: x.initial_state == state_id, edges))   
+            states.append(State(state_id, is_initial, is_final, edges))
+
+        automatonDFA = DFA("automaton", states, edges)
+        a = automatonDFA
 
    
 automaton_file = open("automata.txt")
