@@ -62,7 +62,7 @@ class Reader:
         
         states_arr = list(set(states))
         for x in range(0,len(states_arr)):
-            print(states_arr[x])
+            
 
 
 
