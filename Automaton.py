@@ -9,6 +9,7 @@ class State:
 
     def __init__(self, state_id,is_initial, is_final, edges=None):
         self.state_id = state_id
+        self.is_initial = is_initial
         if edges is None:
             self.edges = []
         else: 
@@ -37,7 +38,7 @@ class Edge:
         return edge
 
 
-class Reader:
+class DFA(Automaton):
 
     def __init__(self, automaton, states=None, edges=None):
         self.automaton = automaton
@@ -56,20 +57,22 @@ class Reader:
         automaton_arr = list(filter(lambda x: len(x)>0,re.split("\n", automaton_str)))  
         edges = []
         states = []
+        states_tmp = []
         for x in range(0,len(automaton_arr)):
             edges.append(Edge.read_from_str(automaton_arr[x]))
-            states.extend(list(filter(lambda x: '(' in x, re.split(",",automaton_arr[x]))))
+            states_tmp.extend(list(filter(lambda x: '(' in x, re.split(",",automaton_arr[x]))))
         
-        states_arr = list(set(states))
+        states_arr = list(set(states_tmp))
         for x in range(0,len(states_arr)):
             print(states_arr[x])
+            states.append(State())
 
 
 
    
 automaton_file = open("automata.txt")
 automaton_string = automaton_file.read()
-Reader.read_from_str(automaton_string)
+DFA.read_from_str(automaton_string)
 
 
 
