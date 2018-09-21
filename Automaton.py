@@ -51,6 +51,9 @@ class DFA(Automaton):
                 self.edges = []
             else:
                 self.edges = edges
+
+    def evaluate_expresion_by_automaton(self, expresion_str):
+        pass
     
     @classmethod
     def read_from_str(cls, automaton_str):
@@ -70,13 +73,14 @@ class DFA(Automaton):
             state_edges = list(filter(lambda x: x.initial_state == state_id, edges))   
             states.append(State(state_id, is_initial, is_final, edges))
 
-        automatonDFA = DFA("automaton", states, edges)
-        a = automatonDFA
+        return DFA("automatonDAF", states, edges)
 
    
 automaton_file = open("automata.txt")
 automaton_string = automaton_file.read()
-DFA.read_from_str(automaton_string)
+automatonDFA = DFA.read_from_str(automaton_string)
+expresion_str = input("write an expresion and press enter to evaluate in automaton:  ")
+automatonDFA.evaluate_expresion_by_automaton(expresion_str)
 
 
 
